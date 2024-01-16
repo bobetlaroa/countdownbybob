@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #countdown {
+            text-align: center;
+        }
+
+        #timer {
+            font-size: 2rem;
+            color: #333;
+            margin: 10px;
+        }
+
+        #time-up {
+            display: none;
+            font-size: 2rem;
+            color: red;
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="countdown">
+        <div id="timer">Time Left: <span id="time"></span></div>
+        <div id="time-up">Time is up!</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const timerElement = document.getElementById('timer');
+            const timeUpElement = document.getElementById('time-up');
+            const timeSpan = document.getElementById('time');
+
+            function updateCountdown(targetDate) {
+                const targetTime = new Date(targetDate).getTime();
+
+                function update() {
+                    const currentTime = new Date().getTime();
+                    const timeDifference = targetTime - currentTime;
+
+                    if (timeDifference <= 0) {
+                        // Time is up!
+                        timerElement.style.display = 'none';
+                        timeUpElement.style.display = 'block';
+                        return;
+                    }
+
+                    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+                    const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+                    const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+                    timeSpan.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                }
+
+                setInterval(update, 1000);
+                update();
+            }
+
+            const inputDate = prompt('Enter the target date and time (YYYY-MM-DD HH:MM:SS):');
+            updateCountdown(inputDate);
+        });
+    </script>
+</body>
+
+</html>
